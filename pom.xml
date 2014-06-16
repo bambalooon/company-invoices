@@ -16,10 +16,9 @@
         <maven-compiler.version>3.1</maven-compiler.version>
         <jaxws-maven.version>2.3</jaxws-maven.version>
         <maven-install.version>2.4</maven-install.version>
-        <jaxws-rt.version>2.2.8</jaxws-rt.version>
-        <annotation.version>1.2</annotation.version>
-        <jaxws.version>2.2.11</jaxws.version>
-        <servlet.version>3.1.0</servlet.version>
+        <jersey.version>1.8</jersey.version>
+        <apache-io.version>1.3.2</apache-io.version>
+        <mimepull.version>1.9.4</mimepull.version>
         <hibernate.version>4.3.5.Final</hibernate.version>
         <hibernate-validator.version>5.1.1.Final</hibernate-validator.version>
         <company-db.version>1.0</company-db.version>
@@ -71,30 +70,37 @@
         </dependency>
 
         <dependency>
-            <groupId>com.sun.xml.ws</groupId>
-            <artifactId>jaxws-rt</artifactId>
-            <version>${jaxws-rt.version}</version>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>${jersey.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>javax.annotation-api</artifactId>
-            <version>${annotation.version}</version>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>${jersey.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
-            <groupId>javax.xml.ws</groupId>
-            <artifactId>jaxws-api</artifactId>
-            <version>${jaxws.version}</version>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-json</artifactId>
+            <version>${jersey.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${servlet.version}</version>
+            <groupId>com.sun.jersey.contribs</groupId>
+            <artifactId>jersey-multipart</artifactId>
+            <version>${jersey.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${apache-io.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -126,45 +132,45 @@
                 </configuration>
             </plugin>
 
-            <plugin>
-                <groupId>org.jvnet.jax-ws-commons</groupId>
-                <artifactId>jaxws-maven-plugin</artifactId>
-                <version>${jaxws-maven.version}</version>
-                <executions>
-                    <execution>
-                        <id>generate-client-wsdl</id>
-                        <phase>process-classes</phase>
-                        <goals>
-                            <goal>wsgen</goal>
-                        </goals>
-                        <configuration>
-                            <sei>pl.bb.broker.company.invoices.ws.services.InvoiceServiceImpl</sei>
-                            <genWsdl>true</genWsdl>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>generate-licence-wsdl</id>
-                        <phase>process-classes</phase>
-                        <goals>
-                            <goal>wsimport</goal>
-                        </goals>
-                        <configuration>
-                            <wsdlDirectory>target/generated-sources/wsdl</wsdlDirectory>
-                            <destDir>target/wsgen/classes</destDir>
-                            <packageName>pl.bb.broker.company.invoices.ws.proxy</packageName>
-                            <keep>true</keep>
-                        </configuration>
-                    </execution>
-                </executions>
+            <!--<plugin>-->
+                <!--<groupId>org.jvnet.jax-ws-commons</groupId>-->
+                <!--<artifactId>jaxws-maven-plugin</artifactId>-->
+                <!--<version>${jaxws-maven.version}</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>generate-client-wsdl</id>-->
+                        <!--<phase>process-classes</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>wsgen</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--<sei>pl.bb.broker.company.rest.ws.services.InvoiceServiceImpl</sei>-->
+                            <!--<genWsdl>true</genWsdl>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
+                    <!--<execution>-->
+                        <!--<id>generate-licence-wsdl</id>-->
+                        <!--<phase>process-classes</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>wsimport</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--<wsdlDirectory>target/generated-sources/wsdl</wsdlDirectory>-->
+                            <!--<destDir>target/wsgen/classes</destDir>-->
+                            <!--<packageName>pl.bb.broker.company.rest.ws.proxy</packageName>-->
+                            <!--<keep>true</keep>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
+                <!--</executions>-->
 
-                <dependencies>
-                    <dependency>
-                        <groupId>pl.bb.broker.company.invoices</groupId>
-                        <artifactId>company-invoices</artifactId>
-                        <version>${company-invoices.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
+                <!--<dependencies>-->
+                    <!--<dependency>-->
+                        <!--<groupId>pl.bb.broker.company.rest</groupId>-->
+                        <!--<artifactId>company-rest</artifactId>-->
+                        <!--<version>${company-rest.version}</version>-->
+                    <!--</dependency>-->
+                <!--</dependencies>-->
+            <!--</plugin>-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -172,7 +178,7 @@
                 <version>${maven-install.version}</version>
                 <executions>
                     <execution>
-                        <id>install-wsclient</id>
+                        <id>install-invoices</id>
                         <phase>install</phase>
                         <goals>
                             <goal>install-file</goal>
